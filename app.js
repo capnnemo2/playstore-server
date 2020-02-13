@@ -34,7 +34,7 @@ app.get("/apps", (req, res) => {
     app.Genres.toLowerCase().includes(genre.toLowerCase())
   );
 
-  function compare(a, b) {
+  function compareApp(a, b) {
     const appA = a.App.toLowerCase();
     const appB = b.App.toLowerCase();
 
@@ -47,8 +47,25 @@ app.get("/apps", (req, res) => {
     return comparison;
   }
 
+  function compareRating(a, b) {
+    const appA = a.Rating;
+    const appB = b.Rating;
+
+    let comparison = 0;
+    if (appA > appB) {
+      comparison = 1;
+    } else if (appA < appB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+
   if (sort) {
-    results.sort(compare);
+    if ("app".includes(sort)) {
+      results.sort(compareApp);
+    } else if ("rating".includes(sort)) {
+      results.sort(compareRating);
+    }
   }
 
   res.json(results);
