@@ -34,10 +34,21 @@ app.get("/apps", (req, res) => {
     app.Genres.toLowerCase().includes(genre.toLowerCase())
   );
 
+  function compare(a, b) {
+    const appA = a.App.toLowerCase();
+    const appB = b.App.toLowerCase();
+
+    let comparison = 0;
+    if (appA > appB) {
+      comparison = 1;
+    } else if (appA < appB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+
   if (sort) {
-    results.sort((a, b) => {
-      return a[sort] > b[sort] ? 1 : a[sort] < b[sort] ? -1 : 0;
-    });
+    results.sort(compare);
   }
 
   res.json(results);
