@@ -8,33 +8,31 @@ app.use(morgan("common"));
 const apps = require("./playstore");
 
 app.get("/apps", (req, res) => {
-  const { genres = "", sort } = req.query;
+  const { genre = "", sort } = req.query;
 
   if (sort) {
     if (!["rating", "app"].includes(sort)) {
-      return res.status(400).send("Sort must be either rating or app");
+      return res.status(400).send("sort must be either rating or app");
     }
   }
 
-  if (genres) {
+  if (genre) {
     if (
       !["action", "puzzle", "strategy", "casual", "arcade", "card"].includes(
-        genres
+        genre
       )
     ) {
       return res
         .status(400)
         .send(
-          "Genres must be action, puzzle, strategy, casual, arcade, or card"
+          "genre must be one of the following: action, puzzle, strategy, casual, arcade, or card"
         );
     }
   }
 
-  let results = apps;
-
-  // let results = apps.filter(app => {
-  //   app.Genres.toLowerCase().includes(genres.toLowerCase());
-  // });
+  let results = apps.filter(app =>
+    app.Genres.toLowerCase().includes(genre.toLowerCase())
+  );
 
   if (sort) {
     results.sort((a, b) => {
